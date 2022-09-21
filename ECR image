@@ -1,10 +1,10 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCOUNT_ID="YOUR_ACCOUNT_ID_HERE"
-        AWS_DEFAULT_REGION="CREATED_AWS_ECR_CONTAINER_REPO_REGION" 
-        IMAGE_REPO_NAME="ECR_REPO_NAME"
-        IMAGE_TAG="IMAGE_TAG"
+        AWS_ACCOUNT_ID="433136941546"
+        AWS_DEFAULT_REGION="us-east-2" 
+        IMAGE_REPO_NAME="jenkinspipeline"
+        IMAGE_TAG="latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
    
@@ -21,15 +21,14 @@ pipeline {
         
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/sd031/aws_codebuild_codedeploy_nodeJs_demo.git']]])     
-            }
+                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Yamini2022/Test.git']]])            }
         }
   
     // Building Docker images
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+          dockerImage = docker.build "${main}:${Dockerfile}
         }
       }
     }
